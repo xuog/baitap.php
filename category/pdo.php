@@ -1,7 +1,7 @@
 <?php
 $DB_TYPE = 'mysql';
 $DB_HOST = 'localhost';
-$DB_NAME = 'crud_test1';
+$DB_NAME = 'crud_test';
 $USER = 'root';
 $PW = '';
 

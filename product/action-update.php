@@ -7,5 +7,5 @@
         'id' => $_GET['id']
     ];
     updateProdData($data);
-    header("Location: http://localhost/learn_php/product/index.php");
+    header("Location: http://localhost/baitap.php/product/index.php");
 ?>

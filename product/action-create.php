@@ -7,5 +7,5 @@
         'cateId' => $_POST['cateId']
     ];
     createNewProdData($data);
-    header("Location: http://localhost/hoc.php/product/index.php");
+    header("Location: http://localhost/baitap.php/product/index.php");
 ?>
