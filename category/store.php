@@ -7,6 +7,6 @@ $request = $_POST;
 $category = [
     'name' => $request['name'],
 ];
-
-create($category);
-redirectHome();
+$categoryConnection= new CategoryConnection();
+$getData->create($category);
+header("Location: http://localhost/hoc.php/product/index.php");
