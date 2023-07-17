@@ -22,7 +22,7 @@
             ];
             $cateArr = getOneData($cateId);
         ?>
-        <form action="action-update.php?id=<?=$prodArr['prodId'] ?>" method="POST">
+        <form action="edit-car.php?id=<?=$prodArr['prodId'] ?>" method="POST">
         <div class="mb-3">
             <label class="form-label">Name</label>
             <input required type="text" class="form-control" name="name" value="<?= $prodArr['prodName']?>">
