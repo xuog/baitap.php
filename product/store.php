@@ -5,8 +5,10 @@ require_once 'helper.php';
 $request = $_POST;
 
 $category = [
-    'name' => $request['name'],
+    'name' => $request['name'],'name' => $request['name'],
+    'price' => $request['price'],
+    'cateId' => $request['cateId'],
 ];
-
-create($category);
-redirectHome()
+$productConnection->createNewProdData($data);
+header("Location: http://localhost/hoc.php/product/index.php");
+?>
