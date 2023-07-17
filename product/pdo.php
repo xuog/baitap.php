@@ -1,50 +1,68 @@
 <?php
-$DB_TYPE = 'mysql';
-$DB_HOST = 'localhost';
-$DB_NAME = 'crud_test';
-$USER = 'root';
-$PW = '';
+require_once "pdo.php";
+require_once "../category/pdo.php";
 
-try {
-    $connection = new PDO("$DB_TYPE:host=$DB_HOST;dbname=$DB_NAME", $USER, $PW);
-    $connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-} catch (Exception $e) {
-    die("Connection failed: " . $e->getMessage());
-}
+$productConnection = new ProductConnection();
+$categoryConnection = new CategoryConnection();
 
-function prepareSQL($sql) {
-    global $connection;
-    return $connection->prepare($sql);
-}
+$category = $categoryConnection->getData();
+$prod = $productConnection->getProdData(); // Fetch product data
 
-function all() {
-    $sql = "SELECT * FROM products";
-    $stmt = prepareSQL($sql);
-    $stmt->execute();
-    return $stmt->fetchAll();
-}
-
-function create($data) {
-    $sql = "INSERT INTO products (name, price, category_id) VALUES (:name, :price, :ca_id)";
-    $stmt = prepareSQL($sql);
-    $stmt->execute($data);
-}
-
-function delete($data) {
-    $sql = "DELETE FROM products where id = :id";
-    $stmt = prepareSQL($sql);
-    $stmt->execute($data);
-}
-
-function update($name, $price, $ca_id, $id) {
-    $sql = "UPDATE products SET name= '$name', price = '$price', category_id = '$ca_id' WHERE id = $id LIMIT 1";
-    $stmt = prepareSQL($sql);
-    $stmt->execute();
-}
-
-function select($data) {
-    $sql = "SELECT * FROM products WHERE id = $data";
-    $stmt = prepareSQL($sql);
-    $stmt->execute();
-    return $stmt->fetchAll();
-}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Product</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container mt-3">
+        <div>
+            <h3>List Products</h3>
+            <a href="create.php" class="btn btn-success" style="margin-right: 5px;">Create</a>
+        </div>
+        <table class="table table-hover">
+        <thead>
+            <tr>
+            <th scope="col">STT</th>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Category</th>
+            <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php 
+                $i = 1;
+                foreach ($products as $product):
+            ?>
+            <tr>
+                <th scope="row"><?= $i++ ?></th>
+                <td><?= $value['proId'] ?></td>
+                <td><?= $value['proName'] ?></td>
+                <td><?= $value['proPrice'] ?></td>
+                <td><?= $value['name'] ?></td>
+                <td>
+                    <form id="delete_<?= $product['proId'] ?>" action="delete.php" method="POST" style="display:flex">
+                        <a href="./edit.php?id=<?= $product['proId'] ?>" class="btn btn-dark" style="margin-right: 5px">Edit</a>
+                        <input type="hidden" value="<?= $product['proId'] ?>" name="id">
+                        <a class="btn btn-dark" onclick="confirmDelete(<?= $product['proId'] ?>)">Delete</a>
+                    </form>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+        </table>  
+    </div>
+    <script>
+        function confirmDelete(id) {
+            let result = confirm('Are you sure?');
+            if (result === true) {
+                console.log(id);
+                document.getElementById(`delete_${id}`).submit();
+            }
+        }
+    </script>
+</body>
+</html>
