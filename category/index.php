@@ -1,19 +1,18 @@
 <?php
     require_once 'pdo.php';
-    $categories = all();
+    $categoryConnection= new CategoryConnection();
+    $category=$categoryConnection->getData();
 ?>
 
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- Required meta tags -->
+    
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <title></title>
+    <title>Hello, world!</title>
 </head>
 <body>
 <div class="container mt-3">
@@ -28,14 +27,17 @@
         </tr>
         </thead>
         <tbody>
-        <?php foreach ($categories as $category) : ?>
+        <?php $i = 1; 
+        foreach ($categories as $category) : ?>
+            
         <tr>
-            <th scope="row"><?= $category['id'] ?></th>
+            <th scope="row"><?= $i++ ?></th>
             <td><?= $category['name'] ?></td>
             <td>
                 <form id="delete_<?= $category['id'] ?>" action="./delete.php" method="post">
                     <input type="hidden" value="<?= $category['id'] ?>" name="id">
                     <button type="button" class="btn btn-danger" onclick="confirmDelete(<?= $category['id'] ?>)">Delete</button>
+                    <a class="btn btn-primary" href="edit.php?id=<?= $category['id'] ?>">Edit</a>
                 </form>
             </td>
         </tr>
